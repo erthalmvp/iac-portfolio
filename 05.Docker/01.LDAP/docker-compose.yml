@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+    ldap_server:
+        image: wshihadeh/openldap:withdata
+        environment:
+          LDAP_ADMIN_PASSWORD: <PASSWORD>
+          LDAP_BASE_DN: dc=shihadeh,dc=intern
+        ports:
+          - 389:389
+    ldap_server_admin:
+        image: osixia/phpldapadmin:0.7.2
+        ports:
+          - 8090:80
+        environment:
+          PHPLDAPADMIN_LDAP_HOSTS: ldap_server
+          PHPLDAPADMIN_HTTPS: 'false'
