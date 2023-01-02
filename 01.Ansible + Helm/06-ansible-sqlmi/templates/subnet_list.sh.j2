@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+subnet=$(az network vnet subnet list -g {{ rg_vnet }} --vnet-name {{ vnet }} --query "[?name=='{{ subnet }}'].id" -o tsv)
+az sql mi create -g {{ rg_main }} -n {{ managed_instance }} -l {{ location }} -i -u "{{ useradmin }}" -p "{{ passadmin }}" --subnet $subnet

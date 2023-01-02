@@ -1,0 +1,14 @@
+---
+
+- name: Create Grafana Dashboard
+  shell: "istioctl dashboard grafana"
+
+- name: Create Prometheus Dashboard
+  shell: "istioctl dashboard prometheus"
+
+- name: Create Jaeger Dashboard
+  shell: "istioctl dashboard jaeger"
+
+- name: Create Kiali Dashboard
+  shell: "istioctl dashboard kiali"
+

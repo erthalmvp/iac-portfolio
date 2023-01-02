@@ -1,0 +1,30 @@
+# Description
+# ===========
+# This playbook creates a SQL Managed Instance and all the infrastructure needed, as described in following document:
+#  https://docs.microsoft.com/en-us/azure/sql-database/sql-database-managed-instance
+# As SQL Managed instance is currently available as preview only, it's necessary
+# to have it enabled in selected subscription.
+# Please note that currently it may take more than 24 hours to complete.
+# This sample requires Ansible 2.7
+# Site: https://github.com/Azure-Samples/ansible-playbooks/blob/master/rest/sql-managed-instance.yml
+
+- name: Integration with AKS and Keyvault
+  hosts: localhost
+  connection: local
+  tasks:
+
+    - include_vars: ../var_ansible/vars.yml
+
+    - name: Copy script to install
+      template:
+        src: templates/install-command.sh.j2
+        dest: "{{ path_tmp }}/install-command.sh"
+        mode: 0755
+
+    - name: Execute commands to integrate them
+      shell: "{{ path_tmp }}/install-command.sh"
+      register: output
+
+    - name: Show results Integration with AKS and Keyvault
+      debug:
+       var: output

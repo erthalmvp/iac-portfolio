@@ -1,0 +1,23 @@
+---
+- name: Load Internal Istio
+  template:
+    src: istio_aks_cluster.yml.j2
+    dest: "{{ path_scripts }}/istio_aks_cluster.yml"
+
+- name: add file gw and vs kiali
+  copy:
+    src: istio.aks.yaml
+    dest: "{{ path_scripts }}/istio_aks.yml"
+
+- name: Copy Script Install
+  template:
+    src: install_aks.sh.j2
+    dest: "{{ path_scripts }}/install_aks.sh"
+    mode: 0755
+
+- name: Deploy ISTIO
+  shell: "{{ path_scripts }}/install_aks.sh"
+  register: istiodash
+
+- debug: var=istiodash.stdout_lines
+

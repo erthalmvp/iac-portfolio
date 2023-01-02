@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Desinstalando o Keda
+      community.kubernetes.helm:
+        name: keda
+        chart_ref: keda
+        release_namespace: keda
+        state: absent
+        wait: true
+    - name: Removendo o namespace Keda
+      community.kubernetes.k8s:
+        name: keda
+        kind: Namespace
+        state: absent

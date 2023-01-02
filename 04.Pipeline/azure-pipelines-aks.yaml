@@ -1,0 +1,30 @@
+trigger:
+  batch: false
+  branches:
+    include:
+      - develop
+      - release/*
+    exclude:
+      - master
+      - feature/*
+
+resources:
+  repositories:
+    - repository: master
+      type: git
+      name: System
+      ref: master
+
+variables:
+  - group: environment-dev
+extends:
+  template: pipeline-terraform.yaml@master
+  parameters:
+    workingDirectory: $(System.DefaultWorkingDirectory)/AKS
+    backendServiceArm: Service-RM
+    backendAzureRmResourceGroupName: RG-DEV
+    backendAzureRmStorageAccountName: csdev
+    backendAzureRmContainerName: infra-code-aks
+    backendAzureRmKey: dev/terraform.tfstate
+    directoryVariables: /var_terraform/DEV/
+    commandOptionsPlan: -var="kubernetes_cluster_version=$(kubernetesClusterVersion)" -var="orchestrator_version=$(orchestratorVersion)" -out deploy.tfplan

@@ -1,0 +1,23 @@
+---
+# Artigo: https://github.com/confluentinc/cp-helm-charts
+# Artigo: https://strimzi.io/quickstarts/
+- name: Install Kafka on AKS
+  hosts: localhost
+  connection: local
+  tasks:
+    - include_vars: ../var_ansible/vars.yml
+
+    - name: Script Confluent
+      template:
+        src: templates/install_confluent.sh.j2
+        dest: "{{ path_tmp }}/install_confluent.sh"
+        mode: 0755
+
+    - name: Install Confluent
+      shell: "{{ path_tmp }}/install_confluent.sh > {{ path_tmp }}/confluent.log" 
+      register: kafka
+
+    - name: Show results
+      debug:
+        var: kafka
+

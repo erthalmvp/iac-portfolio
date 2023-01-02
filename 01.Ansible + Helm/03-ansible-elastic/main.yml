@@ -1,0 +1,21 @@
+---
+# Arttigo : https://talkcloudlytome.com/setting-up-your-own-elk-stack-in-kubernetes-with-azure-aks/
+- name: Install Elastic / Fluentd on AKS
+  hosts: localhost
+  connection: local
+  tasks:
+    - include_vars: ../var_ansible/vars.yml
+
+    - name: Copy template
+      template:
+        src: templates/install_elastic.sh.j2
+        dest: /tmp/install_elastic.sh
+        mode: 0755
+
+    - name: Execute Install Script
+      shell: "/tmp/install_elastic.sh" 
+      register: echo_elastic
+
+    - name: Show results Elastic
+      debug:
+        var: echo_elastic

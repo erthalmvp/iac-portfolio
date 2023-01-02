@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+istioctl manifest apply -f {{ path_scripts }}/istio_aks_cluster.yml >> /tmp/cluster.log
+
+istioctl manifest apply -f {{ path_scripts }}/istio_aks.yml >> istio.log
+echo "Scripts executados, logs em {{ path_scripts }}"

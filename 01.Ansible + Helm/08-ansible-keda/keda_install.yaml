@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Instalando o Keda
+      community.kubernetes.helm:
+        name: kedacore
+        chart_ref: keda
+        release_namespace: keda
+        create_namespace: true

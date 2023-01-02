@@ -1,0 +1,10 @@
+#!/bin/bash
+kubectl create namespace {{ namespace_kafka }}
+sleep 4
+helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
+helm repo update
+helm install confluent-oss confluentinc/cp-helm-charts --set replicas={{ replicas }} --set cp-kafka.persistence.size={{ size_kafka }}Gi --namespace {{ namespace_kafka }}
+sleep 4
+kubectl delete pods confluent-oss-canary -n {{ namespace_kafka }}
+echo "Instalacao em {{ path_tmp }}/confluent.log"
+

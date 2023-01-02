@@ -1,0 +1,11 @@
+---
+
+- name: add file secrets GRAFANA
+  template:
+    src: inst_grafana_secrets.sh.j2
+    dest: "/tmp/inst_grafana_secrets.sh"
+    mode: 0755
+
+- name: create secrets GRAFANA
+  shell: "/tmp/inst_grafana_secrets.sh"
+  ignore_errors: yes

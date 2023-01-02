@@ -1,0 +1,8 @@
+---
+# https://docs.microsoft.com/pt-br/azure/aks/servicemesh-istio-install?pivots=client-operating-system-linux
+- hosts: localhost
+  connection: local
+  tasks:
+    #   var_files:
+    - include_vars: ../var_ansible/vars.yml
+    - include: tasks/istio.yml

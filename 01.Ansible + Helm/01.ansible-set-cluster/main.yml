@@ -1,0 +1,21 @@
+---
+# Arttigo : https://talkcloudlytome.com/setting-up-your-own-elk-stack-in-kubernetes-with-azure-aks/
+- name: Set Cluster
+  hosts: localhost
+  connection: local
+  tasks:
+    - include_vars: ../var_ansible/vars.yml
+
+    - name: Copy template
+      template:
+        src: templates/set_cluster.sh.j2
+        dest: /tmp/set_cluster.sh
+        mode: 0755
+
+    - name: Set Cluster Internal'
+      shell: "/tmp/set_cluster.sh" 
+      register: echo_set_cluster
+
+    - name: Show results Cluster
+      debug:
+        var: echo_set_cluster

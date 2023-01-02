@@ -1,0 +1,11 @@
+---
+
+- name: add file secrets kiali
+  template:
+    src: inst_kiali.sh.j2
+    dest: "/tmp/inst_kiali.sh"
+    mode: 0755
+
+- name: create secrets kiali
+  shell: "/tmp/inst_kiali.sh"
+  ignore_errors: yes

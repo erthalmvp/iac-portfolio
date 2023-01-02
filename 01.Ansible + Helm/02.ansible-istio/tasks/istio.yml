@@ -1,0 +1,24 @@
+---
+- name: Template Namespace
+  template:
+    src: verify_namespace.sh.j2 
+    dest: /tmp/verify_namespace.sh
+    mode: 0755
+
+- name: Verify Namespace Istio
+  shell: "/tmp/verify_namespace.sh"
+  register: namespace
+
+- debug: var=namespace.stdout_lines
+
+- name: status istio
+  debug:
+    msg: "Istio ready!"
+
+- include: install-kiali.yml
+  when: install_kiali == true
+
+- include: install-grafana.yml
+  when: install_grafana == true
+
+- include: istio_enable.yml

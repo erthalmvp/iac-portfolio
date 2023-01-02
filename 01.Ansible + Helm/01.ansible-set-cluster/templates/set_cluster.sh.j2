@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+vnetid=`az aks show -g {{ rg_main }} -n {{ cluster_name }} --query agentPoolProfiles|grep vnetSubnetId|awk -F'"' '{print$4}'`
+VNET_GROUP=`az network vnet show --ids $vnetid --query 'resourceGroup' -o json|tr -d '"'`
+
+SMSI_SERVICE_PRINCIPAL_ID=$(az aks show --resource-group {{ rg_main }} --name {{ cluster_name }} --query "identity.principalId" -o tsv )
+az role assignment create --role "Contributor" --assignee $SMSI_SERVICE_PRINCIPAL_ID -g $VNET_GROUP

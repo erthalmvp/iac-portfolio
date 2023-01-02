@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+
+# download and install csi secrets
+helm repo add csi-secrets-store-provider-azure https://raw.githubusercontent.com/Azure/secrets-store-csi-driver-provider-azure/master/charts
+
+helm install csi-secrets-store-provider-azure/csi-secrets-store-provider-azure --generate-name
+
+# to create a service principal
+az ad sp create-for-rbac --name servicePrincipal --skip-assignment
+
+# get an app id for the service principal
+getappid=`az ad sp list --display-name servicePrincipal | grep appId | awk -F '"' '{print$4}'`
+
+# to get the password into variable
+
+pass=`az ad sp credential reset --name $getappid | grep password | awk -F '"' '{print$4}'`
+
+# to set key vault policy
+az keyvault set-policy -n kvdev --secret-permissions get --spn $getappid
+
+# to create a secret in aks cluster
+kubectl create secret generic secrets-store-creds --from-literal clientid=$getappid --from-literal clientsecret=$pass

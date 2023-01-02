@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+
+    - include_vars: ../DEV_Arquivos/var_ansible_dev/vars_dev.yml
+
+    - name: Create instance of Cosmos DB Account - "{{ cosmosdb_account_name }}"
+      azure_rm_cosmosdbaccount:
+        resource_group: "{{ resource_group }}"
+        location: "{{ location }}"
+        name: "{{ cosmosdb_account_name }}"
+        kind: mongo_db
+        geo_rep_locations:
+          - name: "{{ location }}"
+            failover_priority: 0
+        database_account_offer_type: Standard
+        is_virtual_network_filter_enabled: yes
+
+    - name: Get Cosmos DB Account facts with keys
+      azure_rm_cosmosdbaccount_info:
+        resource_group: "{{ resource_group }}"
+        name: "{{ cosmosdb_account_name }}"
+        retrieve_keys: all
+      register: output    
+
+    - name: Create Cosmos DB Database - "{{ cosmosdb_database_name }}"
+      command: >
+         az cosmosdb mongodb database create
+         --account-name "{{ cosmosdb_account_name }}" 
+         --name "{{ cosmosdb_database_name }}"
+         --resource-group "{{ resource_group }}"
+         --max-throughput "{{ max_throughput }}"
+
+    - name: Create Cosmos DB Collection
+      command: >
+         az cosmosdb mongodb collection create
+         --resource-group "{{ resource_group }}"
+         --account-name "{{ cosmosdb_account_name }}"
+         --database-name "{{ cosmosdb_database_name }}"
+         --name "{{ item }}"
+      loop:
+         - Client A
+         - Client B
+         - Client C
+
+    - name: Display Cosmos DB Account facts output
+      debug:
+        var: output

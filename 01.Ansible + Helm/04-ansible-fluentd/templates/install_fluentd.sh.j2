@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+
+kubectl create namespace {{ namespace_fluentd }}
+
+kubectl create -f /tmp/fluentd.yaml > /tmp/fluentd.log
+echo "Fluentd Criado. Log em /tmp/fluentd.log"

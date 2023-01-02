@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+kubectl get namespaces|grep {{ namespace_kiali }}
+if [ $? -gt 0 ]; then
+	kubectl create namespace {{ namespace_kiali }} --save-config
+	echo "Namespace {{ namespace_kiali }} Criado"
+else
+	echo "Namespace {{ namespace_kiali }} já existente"
+fi

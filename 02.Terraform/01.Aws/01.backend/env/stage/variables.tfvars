@@ -1,0 +1,15 @@
+bucket_name                 = "iac-state"
+key_path                    = "stage/terraform.tfstate"
+region                      = "us-east-1"
+dynamodb_table_name         = "terraform-state"
+kms_alias_name              = "alias/terraform-bucket-key"
+kms_deletion_window_in_days = 10
+bucket_acl                  = "private"
+bucket_versioning_status    = "Enabled"
+bucket_sse_algorithm        = "aws:kms"
+dynamodb_read_capacity      = 1
+dynamodb_write_capacity     = 1
+dynamodb_hash_key           = "LockID"
+dynamodb_attribute_name     = "LockID"
+dynamodb_attribute_type     = "S"
+vpc_cidr_block              = "10.0.0.0/16"

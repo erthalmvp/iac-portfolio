@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+kubectl create namespace {{ namespace_elastic }}
+helm repo add elastic https://helm.elastic.co
+helm install elasticsearch elastic/elasticsearch --set replicas={{ replicas }} --set service.type=LoadBalancer --set-string service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal"=true --namespace {{ namespace_elastic }}
+helm install kibana elastic/kibana --set replicas={{ replicas }} --set service.type=LoadBalancer  --set-string service.annotations."service\.beta\.kubernetes\.io/azure-load-balancer-internal"=true --namespace {{ namespace_elastic }}
+sleep 3
+kubectl delete pods elasticsearch-rrkwj-test -n {{ namespace_elastic }}
+echo "Namespace {{ namespace_elastic }}" criado
